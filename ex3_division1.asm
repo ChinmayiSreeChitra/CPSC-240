@@ -1,25 +1,22 @@
-; ex3_division1.asm
-; unsigned char num1 = 50, num2 = 3;
-; unsigned char quot = 0, remd = 0;
-; quot = num1 / num2;
-; remd = num1 % num2;
-
 section .data
-        num1     db      50                                     ;num1 = 50 = 32h
-        num2     db      3                                      ;num2 = 3 = 03h
-        quot     db      0                                      ;quot = 00h
-	remd     db      0                                      ;remd = 00h
+    num1      dq 50000000000   ; num1 = 50,000,000,000
+    num2      dd 3333333       ; num2 = 3,333,333
+    quotient  dd 0             ; quotient = 0
+    remainder dd 0             ; remainder = 0
 
 section .text
-        global _start
+global _start
 
 _start:
-        mov     al, byte[num1]                                  ;al = num1 = 32h
-	cbw							;movzx ax, al
-        div     byte[num2]                                  	;al=ax/num2=10h,ah=ax%num2=02h 
-        mov     byte[quot], al                                  ;quot = al = 10h
-        mov     byte[remd], ah                                  ;remd = ah = 02h
+    mov     rax, [num1]       ; Load num1 into rax
+    mov     rdx, 0            ; Clear rdx for the division
+    mov     rcx, [num2]       ; Load num2 into rcx
+    div     rcx               ; Divide rax by rcx; quotient in rax, remainder in rdx
 
-        mov     rax, 60                                         ;terminate excuting process
-        mov     rdi, 0                                          ;exit status
-        syscall                                                 ;calling system services
+    mov     [quotient], eax   ; Store the quotient in quotient
+    mov     [remainder], edx  ; Store the remainder in remainder
+
+    ; Exit the program
+    mov     rax, 60           ; syscall number for exit
+    xor     rdi, rdi          ; Exit status 0
+    syscall
