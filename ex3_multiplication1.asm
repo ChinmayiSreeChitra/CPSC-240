@@ -8,6 +8,7 @@ global _start
 
 _start:
     mov rax, [num1]     ; Load num1 into rax
+    mov rbx, [num2]
     mov rcx, [num2]     ; Load num2 into rcx
     imul rax, rcx       ; Multiply rax by rcx
     mov [product], rax  ; Store the result in product
