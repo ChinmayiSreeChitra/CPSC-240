@@ -1,8 +1,6 @@
 section .data
     array dw 12, 1003, 6543, 24680, 789, 30123, 32766   ; Use 'dw' to specify 16-bit values
     even dw 0, 0, 0, 0, 0, 0, 0
-    rsi dq 0
-    rdi dq 0
     format db "Even numbers: %d, %d, %d, %d, %d, %d, %d", 10, 0
 
 section .text
@@ -28,7 +26,7 @@ skip_even:
 
     lea rdi, [format]
     lea rsi, [even]
-    mov rax, 0
+    xor rax, rax
     call printf
 
     mov rax, 60
