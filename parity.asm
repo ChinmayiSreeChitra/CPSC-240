@@ -37,3 +37,14 @@ skip_even:
     mov rax, 60          ; syscall: exit
     xor rdi, rdi         ; status: 0
     syscall
+
+student@tuffix-vm:~/assign3$ yasm -g dwarf2 -f elf64 parity.asm -l parity.lst
+parity.asm:2: warning: value does not fit in 8 bit field
+parity.asm:2: warning: value does not fit in 8 bit field
+parity.asm:2: warning: value does not fit in 8 bit field
+parity.asm:2: warning: value does not fit in 8 bit field
+parity.asm:2: warning: value does not fit in 8 bit field
+parity.asm:2: warning: value does not fit in 8 bit field
+parity.asm:4: error: label or instruction expected at start of line
+parity.asm:5: error: label or instruction expected at start of line
+
