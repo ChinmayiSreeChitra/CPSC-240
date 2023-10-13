@@ -1,50 +1,36 @@
 section .data
-    array db 12, 1003, 6543, 24680, 789, 30123, 32766
-    even db 0, 0, 0, 0, 0, 0, 0
+    array dw 12, 1003, 6543, 24680, 789, 30123, 32766   ; Use 'dw' to specify 16-bit values
+    even dw 0, 0, 0, 0, 0, 0, 0
     rsi dq 0
     rdi dq 0
-    format db "Even numbers: %d, %d, %d, %d, %d, %d, %d", 10, 0  ; Format string for printf
+    format db "Even numbers: %d, %d, %d, %d, %d, %d, %d", 10, 0
 
 section .text
 global main
 extern printf
 
 main:
-    mov rsi, 0           ; Initialize rsi to 0 (rsi is used as an index for array)
-    mov rdi, 0           ; Initialize rdi to 0 (rdi is used as an index for even)
+    mov rsi, 0
+    mov rdi, 0
 
 loop_start:
-    movzx ax, byte [array + rsi]  ; Load the value from array[rsi] into ax (zero-extend)
-    test ax, 1           ; Test if the value is odd (lowest bit set)
-    jnz skip_even        ; If it's odd, skip storing in the even array
+    mov ax, [array + rsi] ; Load a 16-bit value
+    test ax, 1
+    jnz skip_even
 
-    ; Store the even value in even[rdi]
     mov [even + rdi], ax
-    inc rdi              ; Increment rdi (even array index)
+    inc rdi
 
 skip_even:
-    inc rsi              ; Increment rsi (array index)
-    cmp rsi, 7           ; Compare rsi with 7 (the size of the array)
-    jl loop_start        ; If rsi is less than 7, continue the loop
+    inc rsi
+    cmp rsi, 14
+    jl loop_start
 
-    ; Prepare arguments for printf
-    lea rdi, [format]     ; Load the address of the format string
-    lea rsi, [even]       ; Load the address of the even array
-    mov rax, 0            ; Clear RAX for vararg terminator
-    call printf           ; Call the printf function
+    lea rdi, [format]
+    lea rsi, [even]
+    mov rax, 0
+    call printf
 
-    ; Exit the program
-    mov rax, 60          ; syscall: exit
-    xor rdi, rdi         ; status: 0
+    mov rax, 60
+    xor rdi, rdi
     syscall
-
-student@tuffix-vm:~/assign3$ yasm -g dwarf2 -f elf64 parity.asm -l parity.lst
-parity.asm:2: warning: value does not fit in 8 bit field
-parity.asm:2: warning: value does not fit in 8 bit field
-parity.asm:2: warning: value does not fit in 8 bit field
-parity.asm:2: warning: value does not fit in 8 bit field
-parity.asm:2: warning: value does not fit in 8 bit field
-parity.asm:2: warning: value does not fit in 8 bit field
-parity.asm:4: error: label or instruction expected at start of line
-parity.asm:5: error: label or instruction expected at start of line
-
