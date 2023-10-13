@@ -32,3 +32,8 @@ skip_even:
     mov rax, 60
     xor rdi, rdi
     syscall
+
+ld: warning: cannot find entry symbol _start; defaulting to 0000000000401000
+ld: parity.o: in function `skip_even':
+/home/student/assign3//parity.asm:30: undefined reference to `printf'
+
